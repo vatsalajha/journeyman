@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Journeyman | The AI foreman for data center electricians</title>
+<meta name="description" content="Journeyman is an AI foreman on smart glasses that checks electrical work against the spec in real time and turns every task into a QA record.">
+<meta property="og:title" content="Journeyman">
+<meta property="og:description" content="The AI foreman for data center electricians.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23151A21'/%3E%3Cpath d='M36 8 18 36h12l-4 20 20-30H34z' fill='%23F2762E'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #151A21;
+    --ink-2: #1E242D;
+    --line-dark: #333A45;
+    --paper: #F4F2ED;
+    --card: #FBFAF7;
+    --line: #E2DED5;
+    --text: #1C2128;
+    --muted: #4A515C;
+    --muted-dark: #A9AFB8;
+    --light: #EDEAE3;
+    --accent: #F2762E;
+    --accent-ink: #B8501A;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Public Sans", Arial, sans-serif;
+    background: var(--paper);
+    color: var(--text);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  .display { font-family: "Oswald", Arial, sans-serif; font-weight: 600; line-height: 1.05; letter-spacing: 0.2px; }
+  .eyebrow {
+    font-size: 13px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--accent-ink);
+  }
+
+  /* Header */
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(21, 26, 33, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line-dark);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--light); }
+  .brand svg { width: 28px; height: 28px; }
+  .brand span { font-family: "Oswald", Arial, sans-serif; font-size: 22px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+  .nav-cta {
+    font-size: 15px; font-weight: 600; text-decoration: none;
+    color: var(--ink); background: var(--accent);
+    padding: 9px 18px; border-radius: 8px;
+  }
+  .nav-cta:hover { background: #F58A4B; }
+
+  /* Hero */
+  .hero { background: var(--ink); color: var(--light); padding: 112px 0 120px; position: relative; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(242,118,46,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(242,118,46,0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
+  }
+  .hero .wrap { position: relative; }
+  .status {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 14px; font-weight: 500; color: var(--light);
+    border: 1px solid var(--line-dark); border-radius: 999px;
+    padding: 6px 14px 6px 10px; margin-bottom: 32px;
+  }
+  .status i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(242,118,46,0.2); }
+  .hero h1 { font-size: clamp(48px, 8vw, 96px); text-transform: uppercase; max-width: 900px; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p.lead { font-size: clamp(18px, 2.2vw, 22px); color: var(--muted-dark); max-width: 680px; margin-top: 28px; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 40px; }
+  .btn {
+    display: inline-block; font-size: 16px; font-weight: 600; text-decoration: none;
+    padding: 14px 24px; border-radius: 10px;
+  }
+  .btn-primary { background: var(--accent); color: var(--ink); }
+  .btn-primary:hover { background: #F58A4B; }
+  .btn-ghost { border: 1px solid var(--line-dark); color: var(--light); }
+  .btn-ghost:hover { border-color: var(--muted-dark); }
+
+  /* Verdict mock */
+  .verdict {
+    margin-top: 72px; max-width: 560px;
+    background: var(--ink-2); border: 1px solid var(--line-dark); border-radius: 14px;
+    padding: 20px 22px; display: flex; gap: 16px; align-items: flex-start;
+  }
+  .verdict .dot { flex: none; width: 36px; height: 36px; border-radius: 50%; background: rgba(242,118,46,0.14); display: grid; place-items: center; }
+  .verdict .dot svg { width: 18px; height: 18px; }
+  .verdict small { display: block; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted-dark); margin-bottom: 4px; }
+  .verdict p { font-size: 18px; color: var(--light); }
+
+  /* Sections */
+  section { padding: 104px 0; }
+  .section-head { max-width: 760px; margin-bottom: 56px; }
+  .section-head h2 { font-size: clamp(34px, 5vw, 52px); margin-top: 12px; color: var(--ink); }
+  .section-head p { font-size: 19px; color: var(--muted); margin-top: 18px; }
+
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 32px; }
+  .stat b { display: block; font-family: "Oswald", Arial, sans-serif; font-weight: 600; font-size: 52px; line-height: 1; color: var(--accent-ink); }
+  .stat span { display: block; margin-top: 14px; font-size: 17px; color: var(--muted); }
+  .source { margin-top: 20px; font-size: 13px; color: var(--muted); }
+  .source a { color: var(--muted); }
+
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; counter-reset: step; }
+  .step { border-top: 3px solid var(--accent); padding-top: 22px; }
+  .step::before {
+    counter-increment: step; content: "0" counter(step);
+    font-family: "Oswald", Arial, sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 2px; color: var(--accent-ink);
+  }
+  .step h3 { font-family: "Oswald", Arial, sans-serif; font-weight: 600; font-size: 26px; color: var(--ink); margin: 8px 0 10px; }
+  .step p { font-size: 16px; color: var(--muted); }
+
+  .dark { background: var(--ink); color: var(--light); }
+  .dark .section-head h2 { color: var(--light); }
+  .dark .section-head p { color: var(--muted-dark); }
+  .dark .eyebrow { color: var(--accent); }
+  .principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .principle { background: var(--ink-2); border: 1px solid var(--line-dark); border-radius: 16px; padding: 30px; }
+  .principle h3 { font-size: 19px; font-weight: 700; color: var(--light); margin-bottom: 10px; }
+  .principle p { font-size: 16px; color: var(--muted-dark); }
+
+  .cta { text-align: left; }
+  .cta-box {
+    background: var(--accent); color: var(--ink); border-radius: 20px;
+    padding: 56px; display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between;
+  }
+  .cta-box h2 { font-size: clamp(30px, 4.4vw, 46px); max-width: 620px; }
+  .cta-box p { font-size: 18px; margin-top: 12px; max-width: 560px; }
+  .btn-dark { background: var(--ink); color: var(--light); }
+  .btn-dark:hover { background: #232A34; }
+
+  footer { border-top: 1px solid var(--line); padding: 32px 0 48px; }
+  .foot { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; font-size: 14px; color: var(--muted); }
+
+  @media (max-width: 900px) {
+    .steps { grid-template-columns: repeat(2, 1fr); row-gap: 40px; }
+  }
+  @media (max-width: 760px) {
+    .stats, .principles { grid-template-columns: 1fr; }
+    section { padding: 80px 0; }
+    .hero { padding: 80px 0 88px; }
+    .cta-box { padding: 36px 28px; }
+  }
+  @media (max-width: 520px) {
+    .steps { grid-template-columns: 1fr; }
+    .nav-cta { padding: 8px 14px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Journeyman home">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="12" fill="#1E242D"/><path d="M36 8 18 36h12l-4 20 20-30H34z" fill="#F2762E"/></svg>
+      <span>Journeyman</span>
+    </a>
+    <a class="nav-cta" href="#contact">Get in touch</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="status"><i></i>Building the first version now</div>
+      <h1 class="display">The AI foreman for <em>data center</em> electricians</h1>
+      <p class="lead">Journeyman rides on an electrician’s smart glasses. It checks every breaker, cable and label against the spec in real time, speaks up the moment something is wrong, and turns every finished task into a QA record.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#contact">Become a design partner</a>
+        <a class="btn btn-ghost" href="#how">How it works</a>
+      </div>
+      <div class="verdict" role="img" aria-label="Example alert: Circuit 14 should be 30 amp. This breaker reads 20.">
+        <div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="#F2762E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v5"/><path d="M12 16.5v.5"/><path d="M10.3 3.9 2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
+        <div>
+          <small>Live check · Panel 2B</small>
+          <p>“Circuit 14 should be 30 amp. This breaker reads 20.”</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="problem">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">The problem</div>
+        <h2 class="display">The AI buildout runs on electricians, and there aren’t enough of them</h2>
+        <p>Crews are getting thinner and newer. One wrong breaker or missed label means rework, failed inspections and delay disputes.</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>$50.7B</b><span>US data center construction spending at an annual rate in April 2026, a record</span></div>
+        <div class="stat"><b>45 to 70%</b><span>of a data center’s construction cost is electrical work</span></div>
+        <div class="stat"><b>81,000</b><span>electrician openings a year projected to go unfilled through 2034</span></div>
+      </div>
+      <p class="source">Sources: <a href="https://www.metaintro.com/blog/ai-boom-data-center-construction-jobs-worker-shortage-2026">US Census Bureau via metaintro</a>, <a href="https://fortune.com/2026/03/02/ai-data-centers-electrician-shortage-gen-z-training-careers/">IBEW via Fortune</a>, <a href="https://introl.com/blog/data-center-workforce-shortage-340000-unfilled-positions-2026">BLS via Introl</a></p>
+    </div>
+  </section>
+
+  <section id="how" class="dark">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">How it works</div>
+        <h2 class="display">See it, check it, say it, record it</h2>
+        <p>Hands free, on the job, with every verdict traced back to a line in the spec.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><h3 style="color:var(--light)">Sees</h3><p style="color:var(--muted-dark)">Streams what the electrician sees through their glasses or phone.</p></div>
+        <div class="step"><h3 style="color:var(--light)">Checks</h3><p style="color:var(--muted-dark)">Tracks every breaker, cable and label and compares it to the panel schedule.</p></div>
+        <div class="step"><h3 style="color:var(--light)">Speaks</h3><p style="color:var(--muted-dark)">Calls out a problem the moment it happens, while it’s still a quick fix.</p></div>
+        <div class="step"><h3 style="color:var(--light)">Records</h3><p style="color:var(--muted-dark)">Turns each finished task into a timestamped QA record for the contractor.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="why">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Built to be trusted</div>
+        <h2 class="display">Models read the world. Code makes the verdict.</h2>
+      </div>
+      <div class="stats">
+        <div class="stat"><span style="margin-top:0;color:var(--text);font-weight:700;font-size:19px">Traceable</span><span>Every pass or fail is a direct comparison against the confirmed spec, never a guess.</span></div>
+        <div class="stat"><span style="margin-top:0;color:var(--text);font-weight:700;font-size:19px">Honest about doubt</span><span>When a reading isn’t clear, Journeyman asks for a closer look instead of passing it.</span></div>
+        <div class="stat"><span style="margin-top:0;color:var(--text);font-weight:700;font-size:19px">Proof by default</span><span>The QA record comes free with doing the job: the frame, the spec line, the verdict and the time.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="cta" style="padding-top:0">
+    <div class="wrap">
+      <div class="cta-box">
+        <div>
+          <h2 class="display">Run electrical crews on data center builds?</h2>
+          <p>We’re looking for a few design partners to shape Journeyman with us. Let’s talk.</p>
+        </div>
+        <a class="btn btn-dark" href="mailto:vj193@scarletmail.rutgers.edu?subject=Journeyman">Email us</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>© 2026 Journeyman</span>
+    <span>Built in the Bay Area</span>
+  </div>
+</footer>
+
+</body>
+</html>
